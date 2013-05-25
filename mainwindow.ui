@@ -6,15 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
+    <width>1200</width>
     <height>660</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1100</width>
+    <width>1200</width>
     <height>660</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -25,9 +30,15 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1100</width>
+      <width>1200</width>
       <height>660</height>
      </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1200</width>
+      <height>660</height>
+     </size>
     </property>
     <property name="url">
      <url>
@@ -54,25 +65,5 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>webView</sender>
-   <signal>loadProgress(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>onLoadingTips()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>266</x>
-     <y>305</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>428</x>
-     <y>649</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
- <slots>
-  <slot>onLoadingTips()</slot>
- </slots>
+ <connections/>
 </ui>

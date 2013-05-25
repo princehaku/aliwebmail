@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
             this,
             SLOT(handleSslErrors(QNetworkReply*, const QList<QSslError> & ))
             );
+    connect(WebView, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
+    connect(WebView, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
 
     WebView->settings()->setAttribute(QWebSettings::JavaEnabled, true);
     QWebSettings::enablePersistentStorage("./");
@@ -22,8 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     WebView->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
     WebView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
-    WebView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
-    WebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    // 打开后可以使用系统的flash等扩展目测和ime部分时候有冲突
+    // WebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+
     WebView->load(QUrl("https://webmail.alibaba-inc.com/alimail/"));
 }
 
@@ -34,8 +37,15 @@ void MainWindow::handleSslErrors(QNetworkReply* reply, const QList<QSslError> &e
     reply->ignoreSslErrors();
 }
 
-void MainWindow::onLoadingTips() {
-    ui->statusBar->showMessage(tr("Loading"));
+void MainWindow::finishLoading(bool is_finished) {
+    if (is_finished) {
+        ui->webView->page()->mainFrame();
+    }
+}
+
+void MainWindow::setProgress(int p)
+{
+    ui->statusBar->showMessage(QString("%1 (%2%)").arg("Loading").arg(p), 1000);
 }
 
 MainWindow::~MainWindow()

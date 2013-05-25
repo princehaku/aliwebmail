@@ -21,7 +21,8 @@ private:
     Ui::MainWindow* ui;
 
 private slots:
-    void onLoadingTips();
+    void setProgress(int p);
+    void finishLoading(bool is_finished);
     void handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors);
 };
 

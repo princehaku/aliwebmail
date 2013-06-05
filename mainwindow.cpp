@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QWebFrame>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -8,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     QWebView* WebView= ui->webView;
 
+    //WebView->page()->setNetworkAccessManager(own);
     connect(WebView->page()->networkAccessManager(),
             SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> & )),
             this,
@@ -17,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(WebView, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
 
     WebView->settings()->setAttribute(QWebSettings::JavaEnabled, true);
-    QWebSettings::enablePersistentStorage("./");
 
+    WebView->settings()->enablePersistentStorage("./");
     WebView->settings()->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
     WebView->settings()->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
     WebView->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
@@ -27,19 +29,19 @@ MainWindow::MainWindow(QWidget *parent) :
     // 打开后可以使用系统的flash等扩展目测和ime部分时候有冲突
     // WebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
-    WebView->load(QUrl("https://webmail.alibaba-inc.com/alimail/"));
+    WebView->load(QUrl("https://webmail.alibaba-inc.com/alimail/auth/login"));
 }
 
 void MainWindow::handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors)
 {
-    qDebug() << "handleSslErrors: ";
-
     reply->ignoreSslErrors();
 }
 
 void MainWindow::finishLoading(bool is_finished) {
     if (is_finished) {
-        ui->webView->page()->mainFrame();
+        QWebFrame* frame = ui->webView->page()->mainFrame();
+        frame->evaluateJavaScript("./loadcomplete.js");
+        qDebug() <<  frame->url();
     }
 }
 

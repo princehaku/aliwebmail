@@ -13,11 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    myqnetworkaccessmanager.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    myqnetworkaccessmanager.h
 
 FORMS    += mainwindow.ui
 
 OTHER_FILES += \
-    loadcomplete.js
+    loadcomplete.js \
+    1.cer
